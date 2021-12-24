@@ -21,7 +21,6 @@ interface ERC20 {
     event Approval(address indexed _owner, address indexed _spender, uint _value);
 }
 
-
 // My codes
 contract MyERC20 is ERC20 {
     // Basics
@@ -29,8 +28,7 @@ contract MyERC20 is ERC20 {
     string public constant symbol = "MT";
 
     // Defining totalSupply
-    // 20'000'000'000'000'000'000
-    uint private constant TotalSupply = 20000000000000000000;
+    uint private TotalSupply;
 
     // This will keep the amount of tokens that our users have
     mapping (address => uint) private usersBalance;
@@ -43,19 +41,20 @@ contract MyERC20 is ERC20 {
     uint allowed;
 
     // Initiating the owner of the token
-    constructor() {
+    constructor(uint total) {
+        TotalSupply = total;
         owner = msg.sender;
         usersBalance[owner] = TotalSupply;
     }
 
     // When this limit is reached, the smart contract will refuse to create new tokens
-    function totalSupply() public pure override returns (uint _totalSupply) {
-        return _totalSupply = TotalSupply;
+    function totalSupply() public view override returns (uint _totalSupply) {
+        return TotalSupply;
     }
 
     // How many tokens a given address has
     function balanceOf(address _owner) public view override returns (uint balance) {
-        return balance = usersBalance[_owner];
+        return usersBalance[_owner];
     }
 
     // Transfers _value amount of tokens to address _to
@@ -66,13 +65,10 @@ contract MyERC20 is ERC20 {
             usersBalance[msg.sender] -= _value;
             usersBalance[_to] += _value;
             emit Transfer(msg.sender, _to, _value);
-            success = true;
-            return success;
+            return true;
         }
-        else {
-            success = false;
-            return success;
-        }
+        else
+            return false;
     }
 
     // Transfers _value amount of tokens from address _from to address _to
@@ -86,13 +82,10 @@ contract MyERC20 is ERC20 {
             usersBalance[_to] += _value;
             usersAllowance[_from][msg.sender] -= _value;
             emit Transfer(_from, _to, _value);
-            success = true;
-            return success;
+            return true;
         }
-        else {
-            success = false;
-            return success;
-        }
+        else
+            return false;
     }
 
     // Allows _spender to withdraw from your account multiple times, up to the _value amount
@@ -100,8 +93,7 @@ contract MyERC20 is ERC20 {
     function approve(address _spender, uint _value) public override returns (bool success) {
         usersAllowance[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
-        success = true;
-        return success;
+        return true;
     }
 
     // Returns the amount which _spender is still allowed to withdraw from _owner
