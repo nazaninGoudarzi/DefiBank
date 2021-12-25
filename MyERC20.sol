@@ -41,10 +41,11 @@ contract MyERC20 is ERC20 {
     uint allowed;
 
     // Initiating the owner of the token
-    constructor(uint total) {
+    constructor(uint total){
         TotalSupply = total;
         owner = msg.sender;
         usersBalance[owner] = TotalSupply;
+        usersAllowance[owner][owner] = total;
     }
 
     // When this limit is reached, the smart contract will refuse to create new tokens
