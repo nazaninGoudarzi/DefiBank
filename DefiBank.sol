@@ -22,8 +22,9 @@ contract DefiBank {
     // Initiating the owner of the DefiBank
     constructor() {
         //MTToken = 0x2B0746E89Bc60bd196dAC88A095c7340e175D077;
-        token = new MyERC20(20000000000000000000);
+        token = new MyERC20(200000);
         Owner = msg.sender;
+        token.approve(Owner,200000);
     }
 
     // You can use this function to stake tokens
@@ -102,3 +103,4 @@ contract DefiBank {
     receive () external payable {
     }
 }
+
