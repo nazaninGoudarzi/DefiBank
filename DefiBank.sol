@@ -67,7 +67,7 @@ contract DefiBank {
             if(customersInfo[i].account == msg.sender) {
                 uint totalBalance = customersInfo[i].accountBalance;
                 require(totalBalance > 0,'You have already received your tokens!!');
-                MyERC20(MTToken).transferFrom(msg.sender, address(this), tokenAmount);
+                token.transferFrom(msg.sender, address(this), tokenAmount);
                 address payable customerAddress = payable(msg.sender);
                 customerAddress.transfer(tokenAmount);
                 // We will remove the customer
@@ -102,4 +102,3 @@ contract DefiBank {
     receive () external payable {
     }
 }
-
