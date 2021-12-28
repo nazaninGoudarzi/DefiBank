@@ -45,7 +45,6 @@ contract MyERC20 is ERC20 {
         TotalSupply = total;
         owner = msg.sender;
         usersBalance[owner] = TotalSupply;
-        usersAllowance[owner][owner] = total;
     }
 
     // When this limit is reached, the smart contract will refuse to create new tokens
@@ -94,6 +93,14 @@ contract MyERC20 is ERC20 {
     function approve(address _spender, uint _value) public override returns (bool success) {
         usersAllowance[msg.sender][_spender] = _value;
         emit Approval(msg.sender, _spender, _value);
+        return true;
+    }
+
+    // Allows _spender to withdraw from your account multiple times, up to the _value amount
+    // Please send your address
+    function approve2(address _owner, address _spender, uint _value) public returns (bool success) {
+        usersAllowance[_owner][_spender] = _value;
+        emit Approval(_owner, _spender, _value);
         return true;
     }
 
